@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml" lang="en-US">
+<head>
+	<meta charset="utf-8">
+<!--
+/**
+ * audioMotion.js
+ * High-resolution real-time spectrum analyzer and music player
+ *
+ * https://github.com/hvianna/audioMotion.js
+ *
+ * Copyright (c) 2018-2019 Henrique Avila Vianna <hvianna@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+ -->
+	<title>audioMotion.js</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="styles.css">
+	<link rel="stylesheet" href="img/icons/css/styles.css">
+	<link rel="icon" type="image/png" sizes="32x32" href="img/favicon32.png">
+	<link rel="apple-touch-icon" href="img/favicon256.png">
+	<link href="https://fonts.googleapis.com/css?family=Orbitron:900&display=swap" rel="stylesheet">
+ 	<meta name="msapplication-TileImage" content="img/favicon256.png">
+	<meta property="og:url" content="https://github.com/hvianna/audioMotion.js">
+	<meta property="og:title" content="audioMotion.js">
+	<meta property="og:image" content="https://raw.githubusercontent.com/hvianna/audioMotion.js/master/docs/img/audioMotion-header.png">
+	<meta property="og:site_name" content="audioMotion.js">
+	<meta property="og:description" content="High-resolution real-time spectrum analyzer and music player written in JavaScript">
+	<meta property="og:type" content="website">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:site" content="@HenriqueVianna">
+</head>
+
+<body>
+	<header><h1>audioMotion</h1></header>
+	<div id="analyzer" class="analyzer"></div>
+
+	<audio id="player0" controls="controls" preload="auto" crossorigin="anonymous"></audio>
+	<audio id="player1" controls="controls" preload="auto" crossorigin="anonymous"></audio>
+
+	<div class="container flex">
+
+		<div class="config-col">
+			<span class="config-label">AUDIO SOURCE:</span>
+			<select id="source">
+				<option value="player">built-in Player</option>
+				<option value="mic">Microphone</option>
+			</select>
+		</div>
+
+		<div class="player-controls">
+			<button id="btn_prev"><i class="icons8-previous-track-2"></i></button>
+			<button id="btn_play"><i class="icons8-play-button"></i><i class="icons8-pause-button"></i></button>
+			<button id="btn_stop"><i class="icons8-stop-symbol"></i></button>
+			<button id="btn_next"><i class="icons8-skip-this-track-2"></i></button>
+			<span class="help"><button id="btn_shuf"><i class="icons8-shuffle"></i></button>
+				<span class="tooltip">Shuffle playlist</span>
+			</span>
+			<span class="help"><button id="repeat" class="switch"><i class="icons8-repeat"></i></button>
+				<span class="tooltip">Repeat playlist</span>
+			</span>
+		</div>
+
+		<div class="config-col center">
+			<button id="btn_fullscreen" class="fullscreen-button"><u>F</u>ullscreen Analyzer</button>
+			<br>
+			<span class="help"><span class="config-label">KEYBOARD SHORTCUTS</span>
+				<span class="tooltip shortcuts">
+					<table class="kbd-table">
+						<tr><td><kbd class="big">&larr;</kbd> / <kbd>J</kbd></td><td>previous song</td></tr>
+						<tr><td><kbd class="big">&rarr;</kbd> / <kbd>K</kbd></td><td>next song</td></tr>
+						<tr><td><kbd class="wide">Space</kbd></td><td>play / pause</td></tr>
+						<tr><td><kbd>&uarr;</kbd> / <kbd>G</kbd></td><td>previous gradient</td></tr>
+						<tr><td><kbd>&darr;</kbd> / <kbd>g</kbd></td><td>next gradient</td></tr>
+						<tr><td><kbd>F</kbd></td><td>toggle fullscreen</td></tr>
+						<tr><td><kbd>H</kbd></td><td>toggle FPS display</td></tr>
+						<tr><td><kbd>M</kbd> / <kbd>m</kbd></td><td>previous / next mode</td></tr>
+						<tr><td><kbd>N</kbd> / <kbd>n</kbd></td><td>change sensitivity</td></tr>
+						<tr><td><kbd>R</kbd></td><td>toggle playlist repeat</td></tr>
+						<tr><td><kbd>U</kbd></td><td>shuffle playlist</td></tr>
+						<tr><td colspan="2"><br>Underlined character on switches indicate their keyboard shortcode</td></tr>
+					</table>
+				</span>
+			</span>
+		</div>
+	</div>
+
+
+	<div class="container">
+
+		<ul id="panel_selector" class="panel-selector">
+			<li id="show_config" data-panel="config_panel"><i class="icons8-vertical-settings-mixer" title="Analyzer configuration"></i><span>Settings</span></li>
+			<li id="show_filelist" data-panel="files_panel"><i class="icons8-opened-folder-2" title="File explorer and playlist"></i><span>Files</span></li>
+			<li id="show_console" data-panel="console"><i class="icons8-console" title="Message console"></i><span>Console</span></li>
+		</ul>
+
+		<div id="console" class="config-panel"></div>
+
+		<div id="files_panel" class="config-panel">
+			<div class="flex">
+				<div class="config-col">
+					<div class="file_explorer">
+						<div id="file_explorer"></div>
+						<p><kbd>Ctrl</kbd>+click to select multiple / <kbd>Ctrl</kbd> <kbd>Shift</kbd> to select range</p>
+					</div>
+				<div id="local_file_panel" class="local-file">
+						<label><strong>Load a song from your computer:<br><br></strong>
+						<input id="local_file" type="file" accept="audio/*"></label>
+					</div>
+				</div>
+
+				<div class="config-col button-column">
+					<span class="help"><button id="btn_add_selected">Add selected</button>
+						<span class="tooltip">Add selected files to play queue</span>
+					</span>
+					<br>
+					<span class="help"><button id="btn_add_folder">Add all files</button>
+						<span class="tooltip">Add all files in current folder to play queue</span>
+					</span>
+				</div>
+
+				<div id="playlist_panel" class="config-col">
+					<div class="playlist-bar flex">
+						<select id="playlists"></select>
+						<span class="help"><button id="load_playlist"><i class="icons8-opened-folder-2"></i></button>
+							<span class="tooltip">Load selected playlist</span>
+						</span>
+						<span class="help"><button id="save_playlist"><i class="icons8-save"></i></button>
+							<span class="tooltip">Overwrite selected playlist with play queue</span>
+						</span>
+						<span class="help"><button id="delete_playlist"><i class="icons8-trash"></i></button>
+							<span class="tooltip">Delete selected playlist</span>
+						</span>
+					</div>
+					<div class="playqueue-bar flex">
+						<strong>Play queue:</strong>
+						<div>
+							<button id="btn_clear">Clear</button>
+							<button id="create_playlist">Save as...</button>
+						</div>
+					</div>
+					<ul id="playlist" class="filelist"></ul>
+					<p>Double-click to play / Drag to reorder / <kbd>Delete</kbd> to remove</p>
+				</div>
+			</div>
+		</div> <!-- #files_panel -->
+
+		<div id="config_panel" class="config-panel">
+			<div class="config-row flex">
+				<div class="config-col">
+					<span class="help"><span class="config-label">Preset:</span>
+						<span class="tooltip">
+							Load a configuration preset.<br>
+							<strong>"Last session"</strong> restores last used configuration settings.
+						</span>
+					</span>
+					<select id="preset">
+						<option value="" disabled selected>choose a preset</option>
+						<option value="fullres">Full resolution</option>
+						<option value="octave">Octave bands</option>
+						<option value="ledbars">LED bars</option>
+						<option value="custom">Custom</option>
+						<option value="last">Last session</option>
+						<option value="default">Restore defaults</option>
+					</select>
+					<button id="load_preset">Load</button>
+				</div>
+
+				<div class="config-col">
+					<span class="config-label"><u>G</u>radient:</span>
+					<select id="gradient"></select>
+
+					<ul class="switch-bar">
+						<li class="switch" id="cycle_grad"><u>A</u>uto
+							<span class="tooltip">Select next gradient automatically on each track change</span>
+						<li class="switch" id="black_bg">NO <u>B</u>G
+							<span class="tooltip">Use black background instead of background color defined by gradient</span>
+					</ul>
+				</div>
+
+				<ul class="config-col switch-bar">
+					<li class="switch" id="show_song"><u>I</u>NFO
+						<span class="tooltip">Display song info in the visualization area on every track change
+					<li class="switch" id="show_scale"><u>S</u>CALE
+						<span class="tooltip">Show / hide the frequency scale</span>
+					<li class="switch" id="show_peaks"><u>P</u>EAKS
+						<span class="tooltip">Hold volume peaks on screen for a short time</span>
+					<li class="switch" id="no_shadow">FLA<u>T</u>
+						<span class="tooltip">Disable shadows on canvas messages</span>
+					<li class="switch" id="lo_res">L<u>O</u>-RES
+						<span class="tooltip">Lower canvas resolution to improve rendering speed</span>
+					<li class="switch" id="fps">FPS
+						<span class="tooltip">Display current frame rate</span>
+				</ul>
+			</div> <!-- .config-row -->
+
+			<div class="config-row flex">
+				<div class="config-col">
+					<span class="help"><span class="config-label"><u>M</u>ode:</span>
+						<span class="tooltip">
+						Visualization mode. Octave bands are based on the equal tempered scale.
+						</span>
+					</span>
+					<select id="mode">
+						<option value="0">Discrete frequencies</option>
+						<option value="24">Full-octave bands</option>
+						<option value="12">Half-octave bands</option>
+						<option value="8">1/3rd-octave bands</option>
+						<option value="4">1/6th-octave bands</option>
+						<option value="2">1/12th-octave bands</option>
+						<option value="1">1/24th-octave bands</option>
+					</select>
+					<ul class="switch-bar">
+						<li class="switch" id="led_display"><u>L</u>EDS
+							<span class="tooltip">Apply a LED effect to the analyzer bars <em>(octave bands modes only)</em></span>
+					</ul>
+				</div>
+
+				<div class="config-col">
+					<span class="help"><span class="config-label">FFT size:</span>
+						<span class="tooltip">
+						Larger values provide more detail in the frequency domain, but less detail in the time domain.
+						</span>
+					</span>
+					<select id="fft_size"></select>
+				</div>
+
+				<div class="config-col">
+					<span class="help"><span class="config-label">Range:</span>
+						<span class="tooltip">Lowest and highest frequencies represented in the analyzer</span>
+					</span>
+					<select id="freq_min"></select> -
+					<select id="freq_max"></select>	Hz
+				</div>
+
+				<div class="config-col">
+					<span class="help"><span class="config-label">Smoothing:</span>
+						<span class="tooltip">
+						Lower values make the analyzer respond faster to changes
+						</span>
+					</span>
+					<input type="range" id="smoothing" min="0" max="0.9" step="0.1">
+					<span id="smoothingValue"></span>
+				</div>
+			</div> <!-- .config-row -->
+
+			<div class="config-row flex">
+				<div class="config-col">
+					<span class="help">
+						<button id="btn_save">Save current settings</button>
+						<span class="tooltip">Save current settings to the <strong>"Custom"</strong> preset.</span>
+					</span>
+				</div>
+
+				<div class="config-col center">
+					<span class="help"><span class="config-label">Sensitivity:</span>
+						<span class="tooltip">
+						Adjust analyzer sensitivity to improve visualization of songs too quiet or too loud
+						</span>
+					</span>
+					<select id="min_db"></select> to
+					<select id="max_db"></select> dB
+				</div>
+			</div> <!-- .config-row -->
+
+		</div> <!-- #config_panel -->
+
+	</div> <!-- .container -->
+
+	<div class="credits">
+		<strong>audioMotion.js</strong> Copyright &copy; 2018-2019 Henrique Avila Vianna.
+		Source code available on <a href="https://github.com/hvianna/audioMotion.js/">GitHub</a>. Icons by <a href="https://icons8.com/">icons8</a>.
+	</div>
+
+	<script src="audioMotion.js"></script>
+
+</body>
+</html>

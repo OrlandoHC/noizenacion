@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /assets/
+Disallow: /downloads/
+Disallow: /images/
+Disallow: /ism/
+Disallow: /ismbk/
+Disallow: /servermon/
+Allow: /
+Sitemap: https://masterk3y.tech/noizenacion/sitemap.xml

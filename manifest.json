@@ -1,0 +1,54 @@
+{  
+   "name":"Noize Nación Radio",
+   "short_name":"Noize Nación Radio",
+   "description":"La Nación del Ruido",
+   "lang":"es-ES",
+   "dir":"ltr",
+   "start_url":"/",
+   "display":"minimal-ui",
+   "orientation":"any",
+   "background_color":"#efefef",
+   "theme_color":"#000000",
+   "icons":[  
+      {  
+         "src":"https://www.noizenacion.com/assets/img/noizenacion_pwa.png",
+         "sizes":"150x150",
+         "type":"image/png"
+      },
+      {  
+         "src":"https://www.noizenacion.com/assets/img/noizenacion_pwa.png",
+         "sizes":"300x300",
+         "type":"image/png"
+      },
+      {  
+         "src":"https://www.noizenacion.com/assets/img/noizenacion_pwa.png",
+         "sizes":"512x512",
+         "type":"image/png"
+      },
+      {  
+         "src":"https://www.noizenacion.com/assets/img/noizenacion_pwa.png",
+         "sizes":"300x300",
+         "type":"image/png"
+      },
+      {  
+         "src":"https://www.noizenacion.com/assets/img/noizenacion_pwa.png",
+         "sizes":"370x370",
+         "type":"image/png"
+      },
+      {  
+         "src":"https://www.noizenacion.com/assets/img/noizenacion_pwa.png",
+         "sizes":"270x270",
+         "type":"image/png"
+      },
+      {  
+         "src":"https://www.noizenacion.com/assets/img/noizenacion_pwa.png",
+         "sizes":"180x180",
+         "type":"image/png"
+      },
+      {  
+         "src":"https://www.noizenacion.com/assets/img/nnicon32x32.png",
+         "sizes":"32x32",
+         "type":"image/png"
+      }
+   ]
+}
