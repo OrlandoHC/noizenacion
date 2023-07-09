@@ -1,0 +1,76 @@
+#EXTM3U
+
+#EXTINF:-1,Stream Audio - Cidade FM
+https://stream.streamaudio.de:8000/cidade-fm
+
+#EXTINF:-1,Stream Audio - Estacion Satelite
+https://stream.streamaudio.de:8000/estacion-satelite
+
+#EXTINF:-1,Stream Audio - Forest Green Radio
+https://stream.streamaudio.de:8000/forest-green
+
+#EXTINF:-1,Stream Audio - Free Radio Provo
+https://stream.streamaudio.de:8000/free-radio-provo
+
+#EXTINF:-1,Stream Audio - Funky Corner Radio
+https://stream.streamaudio.de:8000/funky-corner-radio.ogg
+
+#EXTINF:-1,Stream Audio - Generation 80
+https://stream.streamaudio.de:8000/generation-80
+
+#EXTINF:-1,Stream Audio - Happy FM
+https://stream.streamaudio.de:8000/happy-fm
+
+#EXTINF:-1,Stream Audio - Harrys Radio Station
+http://stream.streamaudio.de:8000/harrys-radio-station
+
+#EXTINF:-1,Stream Audio - HIT FM
+https://stream.streamaudio.de:8000/hit-fm
+
+#EXTINF:-1,Stream Audio - LXR Radio
+https://stream.streamaudio.de:8000/lxr-radio
+
+#EXTINF:-1,Stream Audio - Noize Nacion Radio
+https://stream.streamaudio.de:8000/noize-nacion-radio
+
+#EXTINF:-1,Stream Audio - Radio Classica Mix
+https://stream.streamaudio.de:8000/radio-classica-mix
+
+#EXTINF:-1,Stream Audio - Radio Dom Bosco FM
+https://stream.streamaudio.de:8000/radio-dom-bosco-fm
+
+#EXTINF:-1,Stream Audio - Radio Kuchka
+https://stream.streamaudio.de:8000/radio-kuchka.ogg
+
+#EXTINF:-1,Stream Audio - Radio Luz de Tarma
+https://stream.streamaudio.de:8000/radio-luz-de-tarma
+
+#EXTINF:-1,Stream Audio - Radio MEGA HITS
+https://stream.streamaudio.de:8000/radio-mega-hits
+
+#EXTINF:-1,Stream Audio - Radio Pintinho
+https://stream.streamaudio.de:8000/radio-pintinho
+
+#EXTINF:-1,Stream Audio - Radio Salesiana 
+https://stream.streamaudio.de:8000/radio-salesiana
+
+#EXTINF:-1,Stream Audio - Radio SINFA
+https://stream.streamaudio.de:8000/radio-sinfa
+
+#EXTINF:-1,Stream Audio - Romantica HD
+https://stream.streamaudio.de:8000/romantica-hd.opus
+
+#EXTINF:-1,Stream Audio - SLMTV Radio
+https://stream.streamaudio.de:8000/slmtv-radio
+
+#EXTINF:-1,Stream Audio - Chaos Radio!
+http://stream.streamaudio.de:8000/teststream2
+
+#EXTINF:-1,Stream Audio - pro 5 makassar
+http://stream.streamaudio.de:8000/teststream3
+
+#EXTINF:-1,Stream Audio - ToonFM
+http://stream.streamaudio.de:8000/toonfm
+
+#EXTINF:-1,Stream Audio - VibeRadio Brasil
+http://stream.streamaudio.de:8000/viberadio-brasil
