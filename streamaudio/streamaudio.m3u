@@ -63,6 +63,9 @@ https://stream.streamaudio.de:8000/romantica-hd.opus
 #EXTINF:-1,Stream Audio - SLMTV Radio
 https://stream.streamaudio.de:8000/slmtv-radio
 
+#EXTINF:-1,Stream Audio - Strul FM
+http://stream.streamaudio.de:8000/strul-fm
+
 #EXTINF:-1,Stream Audio - Chaos Radio!
 http://stream.streamaudio.de:8000/teststream2
 
