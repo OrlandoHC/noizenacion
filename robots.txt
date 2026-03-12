@@ -6,4 +6,4 @@ Disallow: /ism/
 Disallow: /ismbk/
 Disallow: /servermon/
 Allow: /
-Sitemap: https://masterk3y.tech/noizenacion/sitemap.xml
+Sitemap: sitemap.xml
