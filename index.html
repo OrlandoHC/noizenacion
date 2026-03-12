@@ -1,269 +1,191 @@
 <!DOCTYPE html>
 <html lang="es">
-
-<head>
-<title>Noize Nación | Radio Electrónica en México</title>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#000000">
-
-<meta name="description" content="Emisora de radio electrónica open source transmitiendo 24/7 desde México.">
-<meta name="keywords" content="Radio Electrónica, Música Electrónica México">
-<meta name="author" content="Orlando Hernandez Cruz">
-
-<link rel="manifest" href="manifest.json">
-
-<link rel="stylesheet" href="./assets/css/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-<link rel="icon" href="./assets/img/nnicon32x32.png">
-
-<style>
-
-body{
-font-family:"Lato",sans-serif;
-}
-
-.responsive{
-width:100%;
-max-width:400px;
-height:auto;
-}
-
-.radio-container{
-display:flex;
-justify-content:center;
-margin:40px 0;
-}
-
-.player{
-background:#111;
-border-radius:20px;
-color:white;
-padding:30px;
-width:320px;
-text-align:center;
-box-shadow:0 0 30px rgba(0,255,200,0.2);
-}
-
-.logo{
-font-size:22px;
-letter-spacing:2px;
-font-weight:bold;
-margin-bottom:10px;
-}
-
-.live{
-color:#00ffc8;
-font-size:12px;
-margin-bottom:20px;
-}
-
-button{
-background:#00ffc8;
-border:none;
-border-radius:50%;
-width:70px;
-height:70px;
-font-size:22px;
-cursor:pointer;
-}
-
-.controls{
-margin-top:15px;
-}
-
-input[type=range]{
-width:100%;
-}
-
-.iframe-container{
-position:relative;
-width:100%;
-padding-top:25%;
-}
-
-.iframe-container iframe{
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-border:none;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<!-- NAVBAR -->
-
-<div class="w3-top">
-<div class="w3-bar w3-black w3-card">
-
-<a href="#" class="w3-bar-item w3-button">Inicio</a>
-<a href="#streams" class="w3-bar-item w3-button">Streams</a>
-<a href="#wiki" class="w3-bar-item w3-button">Historia</a>
-<a href="./streamaudio/" target="_blank" class="w3-bar-item w3-button">Directorio</a>
-<a href="https://stream.streamaudio.de:8000/?mount=/noize-nacion-radio" target="_blank" class="w3-bar-item w3-button">Stats</a>
-<a href="#contacto" class="w3-bar-item w3-button">Contacto</a>
-
-</div>
-</div>
-
-
-<div class="w3-content" style="max-width:2000px;margin-top:60px">
-
-<div style="color:red;font-weight:bold;text-align:center">
-
-<marquee>
-AVISO: El volumen recomendado en auriculares es menor a 85 dB.
-</marquee>
-
-</div>
-
-
-<div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px">
-
-<img src="./assets/img/logo.png" class="responsive">
-
-<h3 class="w3-justify">
-Radio Open Source que difunde lo más selecto y underground en música electrónica,
-transmitiendo desde Saltillo, Coahuila, México.
-</h3>
-
-
-<!-- PLAYER -->
-
-<div id="streams" class="radio-container">
-
-<div class="player">
-
-<div class="logo">NOIZE NACIÓN</div>
-<div class="live">● LIVE STREAM</div>
-
-<button id="playBtn">▶</button>
-
-<div class="controls">
-<input type="range" id="volume" min="0" max="1" step="0.01" value="0.8">
-</div>
-
-</div>
-
-</div>
-
-<audio id="radio">
-<source src="https://a11.asurahosting.com:8940/radio.mp3" type="audio/mpeg">
-</audio>
-
-
-<h2 class="w3-xlarge">Retransmisores de Noize Nación</h2>
-
-<div class="iframe-container">
-<iframe src="./slider/index.html"></iframe>
-</div>
-
-</div>
-
-
-<!-- HISTORIA -->
-
-<div id="wiki" class="w3-black">
-
-<div class="w3-container w3-content w3-padding-64" style="max-width:800px">
-
-<h2 class="w3-center">Historia</h2>
-
-<p style="text-align:justify">
-
-Proyecto nacido en 2015 con la idea de difundir lo mejor y más misterioso de la música electrónica.
-Creado por <a href="https://www.instagram.com/orlandohc/" target="_blank">Orlando Hernandez Cruz (Masterk3y)</a>.
-
-La infraestructura de transmisión se encuentra distribuida en servidores en Nueva York y Letonia
-para garantizar disponibilidad global.
-
-</p>
-
-</div>
-
-</div>
-
-
-<!-- CONTACTO -->
-
-<div id="contacto" class="w3-container w3-center w3-light-grey w3-padding-32 w3-xlarge">
-
-<h2>Contacto</h2>
-
-<a href="https://github.com/OrlandoHC/noizenacion" target="_blank">
-<i class="fa fa-github"></i>
-</a>
-
-<a href="mailto:contacto@noizenacion.com">
-<i class="fa fa-envelope"></i>
-</a>
-
-<a href="tel:8617989375">
-<i class="fa fa-phone"></i>
-</a>
-
-<a href="https://wa.me/528617989375">
-<i class="fa fa-whatsapp"></i>
-</a>
-
-</div>
-
-
-<!-- STATCOUNTER -->
-
-<div style="text-align:center;margin:20px">
-
-<script>
-var sc_project=13210079;
-var sc_invisible=0;
-var sc_security="8ff9678e";
-</script>
-
-<script src="https://statcounter.com/counter/counter.js" async></script>
-
-<noscript>
-<img src="https://c.statcounter.com/13210079/0/8ff9678e/0/">
-</noscript>
-
-</div>
-
-
-<script>
-
-const radio = document.getElementById("radio")
-const playBtn = document.getElementById("playBtn")
-const volume = document.getElementById("volume")
-
-let playing=false
-
-playBtn.onclick=()=>{
-
-if(!playing){
-radio.play()
-playBtn.innerHTML="❚❚"
-playing=true
-}else{
-radio.pause()
-playBtn.innerHTML="▶"
-playing=false
-}
-
-}
-
-volume.oninput=()=>{
-radio.volume=volume.value
-}
-
-</script>
-
-</body>
+   <head>
+      <title>Noize Nación | Radio Electrónica en México</title>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="theme-color" content="#000000" />
+      <meta name="title" content="Noize Nación | Radio Electrónica en México"/>
+      <meta name="description" content="Emisora De Radio Open Source que difunde lo mejor y más actual en música electrónica por Internet las 24 horas del día, Transmitiendo desde Nueva Rosita Coahuila México.">
+      <meta name="keywords" content="Radio Electrónica en México, Radio Electrónica México">
+      <meta name="author" content="Orlando Hernandez Cruz - @OrlandoHC | Masterk3y">
+      <link rel="manifest" href="manifest.json">
+      <link rel="stylesheet" href="./assets/css/w3.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="stylesheet" href="ism/css/my-slider.css"/>
+      <script src="ism/js/ism-2.2.min.js"></script>
+      <link rel="apple-touch-icon" sizes="180x180" href="./assets/img/nnacion_ico.png">
+      <link rel="icon" type="image/png" sizes="32x32" href="./assets/img/nnicon32x32.png">
+      <link rel="icon" type="image/png" sizes="16x16" href="./assets/img/nnicon16x16.png">
+      <style>
+         body{
+         font-family:"Lato",sans-serif;
+         }
+         .responsive{
+         width:100%;
+         max-width:400px;
+         height:auto;
+         }
+         .radio-container{
+         display:flex;
+         justify-content:center;
+         margin:40px 0;
+         }
+         .player{
+         background:#111;
+         border-radius:20px;
+         color:white;
+         padding:30px;
+         width:320px;
+         text-align:center;
+         box-shadow:0 0 30px rgba(0,255,200,0.2);
+         }
+         .logo{
+         font-size:22px;
+         letter-spacing:2px;
+         font-weight:bold;
+         margin-bottom:10px;
+         }
+         .live{
+         color:#00ffc8;
+         font-size:12px;
+         margin-bottom:20px;
+         }
+         button{
+         background:#00ffc8;
+         border:none;
+         border-radius:50%;
+         width:70px;
+         height:70px;
+         font-size:22px;
+         cursor:pointer;
+         }
+         .controls{
+         margin-top:15px;
+         }
+         input[type=range]{
+         width:100%;
+         }
+         .iframe-container{
+         position:relative;
+         width:100%;
+         padding-top:25%;
+         }
+         .iframe-container iframe{
+         position:absolute;
+         top:0;
+         left:0;
+         width:100%;
+         height:100%;
+         border:none;
+         }
+      </style>
+   </head>
+   <body>
+      <!-- NAVBAR -->
+      <div class="w3-top">
+         <div class="w3-bar w3-black w3-card">
+            <a href="#" class="w3-bar-item w3-button">Inicio</a>
+            <a href="#schedule" class="w3-bar-item w3-button">Programas</a>
+            <a href="#streams" class="w3-bar-item w3-button">Streams</a>
+            <a href="#wiki" class="w3-bar-item w3-button">Wiki</a>
+            <a href="./streamaudio/" target="_blank" class="w3-bar-item w3-button">Directorio de Estaciones</a>
+            <a href="https://stream.streamaudio.de:8000/?mount=/noize-nacion-radio" target="_blank" class="w3-bar-item w3-button">Stats</a>
+            <a href="#social" class="w3-bar-item w3-button">Contacto</a>
+         </div>
+      </div>
+      <div class="w3-content" style="max-width:2000px;margin-top:60px">
+      <br>
+      <div style="color:red;font-weight:bolder;text-align:center">
+         <marquee>
+            AVISO DE SALUD: El nivel de volumen diario recomendado en auriculares es inferior a 85 dB durante un máximo de ocho horas. La configuración de audio de Noize Nación excede este limite, por lo tanto, escuchar por períodos prolongados de tiempo puede ocasionar pérdida en la audición parcial o total. Escuche con precaución.
+         </marquee>
+      </div>
+      <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px">
+         <img src="./assets/img/logo.png" class="responsive" alt="Logo Noize Nación">
+         <h3 class="w3-justify">
+            Radio Open Source que difunde lo mas selecto y undeground en música electrónica, Transmitiendo por internet desde Saltillo Coahuila México.
+         </h3>
+         <!-- PLAYER -->
+         <div id="streams" class="radio-container">
+            <div class="player">
+               <div class="logo">NOIZE NACIÓN</div>
+               <div class="live">● LIVE STREAM</div>
+               <button id="playBtn">▶</button>
+               <div class="controls">
+                  <input type="range" id="volume" min="0" max="1" step="0.01" value="0.8">
+               </div>
+            </div>
+         </div>
+         <audio id="radio">
+            <source src="https://a11.asurahosting.com:8940/radio.mp3" type="audio/mpeg">
+         </audio>
+         <h2 class="w3-container w3-center w3-xlarge">Retransmisores de Noize Nación Radio</h2>
+         <div class="iframe-container">
+            <iframe src="./slider/index.html"></iframe>
+         </div>
+      </div>
+      <!-- HISTORIA ORIGINAL -->
+      <div class="w3-black">
+         <div id="wiki" class="w3-container w3-content w3-padding-64" style="max-width:800px">
+            <h2 class="w3-xlarge w3-center">Historia</h2>
+            <h3 align="justify">
+               <i>"Proyecto que nace en Agosto de 2015 de la idea de llevar a los oídos de todo el mundo, lo mejor, más selecto, misterioso y desconocido en música electrónica, creada por <a href="https://www.instagram.com/orlandohc/" target="_blank">Orlando Hernandez Cruz (aka Masterk3y)</a>; Iniciando transmisiones en la pequeña ciudad de Nueva Rosita y posteriormente trasladándose a la ciudad de Saltillo en el estado de Coahuila, Noize Nacion es la única Estación de Radio 100% de Música Electrónica en el Norte de México. Hoy en día se posiciona en los primeros lugares de popularidad y se retransmite en mas de 15 plataformas siendo del agrado de los radioescuchas a nivel mundial." </i>
+               <br><br>
+               El flujo de audio principal de Noize Nación es soportado por AsuraHosting y Stream Audio. La infraestructura de transmisión se encuentra distribuida en servidores ubicados en Nueva York y Letonia, lo que garantiza alta disponibilidad y alcance internacional.
+               <br><br>
+               Noize Nación utiliza Stereo Tool como procesador de audio profesional, optimizando la calidad sonora para ofrecer una experiencia consistente y con estándar de radiodifusión real. Sin importar dónde se escuche, Noize Nación mantiene un sonido nítido, optimizado y profesional.
+               <br><br>
+               Si eres DJ o Productor, puedes transmitir tus sets o eventos masivos en vivo por Noize Nación, si deseas mas información envía un <a href="https://wa.me/+528617989375">WhatsAPP.</a>
+            </h3>
+         </div>
+      </div>
+      <!-- CONTACTO -->
+      <div id="social" class="w3-container w3-padding-32 w3-center w3-light-grey w3-xlarge">
+         <h2>Contacto</h2>
+         <a href="https://github.com/OrlandoHC/noizenacion" target="_blank"><i class="fa fa-github"></i></a>
+         <a href="mailto:contacto@noizenacion.com"><i class="fa fa-envelope"></i></a>
+         <a href="tel:8617989375"><i class="fa fa-phone"></i></a>
+         <a href="https://wa.me/+528617989375"><i class="fa fa-whatsapp"></i></a>
+      </div>
+      <!-- STATCOUNTER -->
+      <div style="text-align:center;margin-top:20px">
+         <script>
+            var sc_project=13210079;
+            var sc_invisible=0;
+            var sc_security="8ff9678e";
+         </script>
+         <script src="https://statcounter.com/counter/counter.js" async></script>
+         <noscript>
+            <img src="https://c.statcounter.com/13210079/0/8ff9678e/0/">
+         </noscript>
+      </div>
+      <script>
+         const radio = document.getElementById("radio")
+         const playBtn = document.getElementById("playBtn")
+         const volume = document.getElementById("volume")
+         
+         let playing=false
+         
+         playBtn.onclick=()=>{
+         
+         if(!playing){
+         radio.play()
+         playBtn.innerHTML="❚❚"
+         playing=true
+         }else{
+         radio.pause()
+         playBtn.innerHTML="▶"
+         playing=false
+         }
+         
+         }
+         
+         volume.oninput=()=>{
+         radio.volume=volume.value
+         }
+         
+      </script>
+   </body>
 </html>
