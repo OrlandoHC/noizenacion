@@ -1,344 +1,339 @@
 <!DOCTYPE html>
 <html lang="es">
-<title>Noize Nación | Radio Electrónica en México</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#000000" />
-<meta name="title" content="Noize Nación | Radio Electrónica en México"/>
-<meta name="description" content="Emisora De Radio Open Source que difunde lo mejor y más actual en música electrónica por Internet las 24 horas del día, Transmitiendo desde Nueva Rosita Coahuila México.">
-<meta name="keywords" content="Radio Electrónica en México, Radio Electrónica México">
-<meta name="author" content="Orlando Hernandez Cruz - @OrlandoHC | Masterk3y">
-<link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="./assets/css/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="ism/css/my-slider.css"/>
-<link rel="apple-touch-icon" sizes="180x180" href="./assets/img/nnacion_ico.png"> 
-<link rel="icon" type="image/png" sizes="32x32" href="./assets/img/nnicon32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="./assets/img/nnicon16x16.png">
-<link rel="shortcut icon" href="./assets/img/nnicon32x32.ico">
-<script src="ism/js/ism-2.2.min.js"></script>
-<script type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=5cf948294351e9001264f8cc&product=social-analytics' async='async'></script>
-
-<div id="fb-root"></div>
-<script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v3.3"></script>
-<style>
-body {font-family: "Lato", sans-serif}
-.container { width: auto; margin: auto; padding-top: 0em; }
-.container .ism-slider { margin-left: auto; margin-right: auto; }
-.responsive {
-  width: 100%;
-  max-width: 400px;
-  height: auto;
-}
-.container {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  padding-top: 25%; /* 16:9 Aspect Ratio */
-}
-
-.responsive-iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-
-.radio-container{
-display:flex;
-justify-content:center;
-margin-top:40px;
-margin-bottom:40px;
-}
-
-.player{
-align-items:center;
-background:#111;
-border-radius:20px;
-color:white;
-padding:30px;
-width:320px;
-text-align:center;
-box-shadow:0 0 30px rgba(0,255,200,0.2);
-}
-
-.logo{
-font-size:22px;
-letter-spacing:2px;
-font-weight:bold;
-margin-bottom:10px;
-}
-
-.live{
-color:#00ffc8;
-font-size:12px;
-margin-bottom:20px;
-}
-
-button{
-background:#00ffc8;
-border:none;
-border-radius:50%;
-width:70px;
-height:70px;
-font-size:22px;
-cursor:pointer;
-}
-
-button:hover{
-transform:scale(1.05);
-}
-
-.controls{
-margin-top:15px;
-}
-
-input[type=range]{
-width:100%;
-}
-
-.equalizer{
-display:flex;
-justify-content:center;
-margin-top:20px;
-gap:4px;
-}
-
-.bar{
-width:5px;
-height:10px;
-background:#00ffc8;
-animation:wave 1s infinite;
-}
-
-.bar:nth-child(2){animation-delay:0.2s;}
-.bar:nth-child(3){animation-delay:0.4s;}
-.bar:nth-child(4){animation-delay:0.6s;}
-.bar:nth-child(5){animation-delay:0.8s;}
-
-@keyframes wave{
-0%{height:10px}
-50%{height:25px}
-100%{height:10px}
-}
-
-</style>
-<body>
-<script>
-if ('serviceWorker' in navigator) {
-   window.addEventListener('load', function() {
-     navigator.serviceWorker.register('./sw.js').then(function(registration) {
-       // Si es exitoso
-       console.log('SW registrado correctamente');
-     }, function(err) {
-       // Si falla
-       console.log('SW fallo', err);
-     });
-   });
- }
-</script>
-<!-- Navbar -->
-<div class="w3-top">
-  <div class="w3-bar w3-black w3-card">
-    <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
-    <a href="#" class="w3-bar-item w3-button w3-padding-large">Inicio</a>
-    <a href="#schedule" class="w3-bar-item w3-button w3-padding-large">Programas</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Streams</a>
-    <a href="#wiki" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Wiki</a>
-    <a href="./streamaudio/" target="_blank" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Directorio de Estaciones</a>
-    <a href="https://stream.streamaudio.de:8000/?mount=/noize-nacion-radio" target="_blank" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Stats</a>
-
-    <a href="#social" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Contacto</a>
-    <!--<div class="w3-dropdown-hover w3-hide-small">
-      <button class="w3-padding-large w3-button" title="More">MORE <i class="fa fa-caret-down"></i></button>     
-      <div class="w3-dropdown-content w3-bar-block w3-card-4">
-        <a href="#" class="w3-bar-item w3-button">Merchandise</a>
-        <a href="#" class="w3-bar-item w3-button">Extras</a>
-        <a href="#" class="w3-bar-item w3-button">Media</a>
+   <title>Noize Nación | Radio Electrónica en México</title>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="theme-color" content="#000000" />
+   <meta name="title" content="Noize Nación | Radio Electrónica en México"/>
+   <meta name="description" content="Emisora De Radio Open Source que difunde lo mejor y más actual en música electrónica por Internet las 24 horas del día, Transmitiendo desde Nueva Rosita Coahuila México.">
+   <meta name="keywords" content="Radio Electrónica en México, Radio Electrónica México">
+   <meta name="author" content="Orlando Hernandez Cruz - @OrlandoHC | Masterk3y">
+   <link rel="manifest" href="manifest.json">
+   <link rel="stylesheet" href="./assets/css/w3.css">
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+   <link rel="stylesheet" href="ism/css/my-slider.css"/>
+   <link rel="apple-touch-icon" sizes="180x180" href="./assets/img/nnacion_ico.png">
+   <link rel="icon" type="image/png" sizes="32x32" href="./assets/img/nnicon32x32.png">
+   <link rel="icon" type="image/png" sizes="16x16" href="./assets/img/nnicon16x16.png">
+   <link rel="shortcut icon" href="./assets/img/nnicon32x32.ico">
+   <script src="ism/js/ism-2.2.min.js"></script>
+   <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js" defer></script>
+   <div id="fb-root"></div>
+   <script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v3.3"></script>
+   <style>
+      body {font-family: "Lato", sans-serif}
+      .container { width: auto; margin: auto; padding-top: 0em; }
+      .container .ism-slider { margin-left: auto; margin-right: auto; }
+      .responsive {
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      }
+      .container {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      padding-top: 25%; /* 16:9 Aspect Ratio */
+      }
+      .responsive-iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      }
+      .radio-container{
+      display:flex;
+      justify-content:center;
+      margin-top:40px;
+      margin-bottom:40px;
+      }
+      .player{
+      align-items:center;
+      background:#111;
+      border-radius:20px;
+      color:white;
+      padding:30px;
+      width:320px;
+      text-align:center;
+      box-shadow:0 0 30px rgba(0,255,200,0.2);
+      }
+      .logo{
+      font-size:22px;
+      letter-spacing:2px;
+      font-weight:bold;
+      margin-bottom:10px;
+      }
+      .live{
+      color:#00ffc8;
+      font-size:12px;
+      margin-bottom:20px;
+      }
+      button{
+      background:#00ffc8;
+      border:none;
+      border-radius:50%;
+      width:70px;
+      height:70px;
+      font-size:22px;
+      cursor:pointer;
+      }
+      button:hover{
+      transform:scale(1.05);
+      }
+      .controls{
+      margin-top:15px;
+      }
+      input[type=range]{
+      width:100%;
+      }
+      .equalizer{
+      display:flex;
+      justify-content:center;
+      margin-top:20px;
+      gap:4px;
+      }
+      .bar{
+      width:5px;
+      height:10px;
+      background:#00ffc8;
+      animation:wave 1s infinite;
+      }
+      .bar:nth-child(2){animation-delay:0.2s;}
+      .bar:nth-child(3){animation-delay:0.4s;}
+      .bar:nth-child(4){animation-delay:0.6s;}
+      .bar:nth-child(5){animation-delay:0.8s;}
+      @keyframes wave{
+      0%{height:10px}
+      50%{height:25px}
+      100%{height:10px}
+      }
+   </style>
+   <body>
+      <script>
+         if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+              navigator.serviceWorker.register('./sw.js').then(function(registration) {
+                // Si es exitoso
+                console.log('SW registrado correctamente');
+              }, function(err) {
+                // Si falla
+                console.log('SW fallo', err);
+              });
+            });
+          }
+      </script>
+      <!-- Navbar -->
+      <div class="w3-top">
+         <div class="w3-bar w3-black w3-card">
+            <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+            <a href="#" class="w3-bar-item w3-button w3-padding-large">Inicio</a>
+            <a href="#schedule" class="w3-bar-item w3-button w3-padding-large">Programas</a>
+            <a href="#" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Streams</a>
+            <a href="#wiki" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Wiki</a>
+            <a href="./streamaudio/" target="_blank" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Directorio de Estaciones</a>
+            <a href="https://stream.streamaudio.de:8000/?mount=/noize-nacion-radio" target="_blank" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Stats</a>
+            <a href="#social" class="w3-bar-item w3-button w3-padding-large w3-hide-small">Contacto</a>
+            <!--<div class="w3-dropdown-hover w3-hide-small">
+               <button class="w3-padding-large w3-button" title="More">MORE <i class="fa fa-caret-down"></i></button>     
+               <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                 <a href="#" class="w3-bar-item w3-button">Merchandise</a>
+                 <a href="#" class="w3-bar-item w3-button">Extras</a>
+                 <a href="#" class="w3-bar-item w3-button">Media</a>
+               </div>
+               </div>
+               <a href="javascript:void(0)" class="w3-padding-large w3-hover-red w3-hide-small w3-right"><i class="fa fa-search"></i></a>-->
+         </div>
       </div>
-    </div>
-    <a href="javascript:void(0)" class="w3-padding-large w3-hover-red w3-hide-small w3-right"><i class="fa fa-search"></i></a>-->
-  </div>
-</div>
+      <!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
+      <div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
+         <a href="#" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Streams</a>
+         <a href="#wiki" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Wiki</a>
+         <a href="./streamaudio/" target="_blank" class="w3-bar-item w3-button w3-padding-large">Directorio de Estaciones</a>
+         <a href="https://stream.streamaudio.de:8000/?mount=/noize-nacion-radio" target="_blank" class="w3-bar-item w3-button w3-padding-large">Stats</a>
+         <a href="#social" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Contacto</a>
+      </div>
+      <!-- Page content -->
+      <div class="w3-content" style="max-width:2000px;margin-top:45px">
+         <br>
+         <div style="color:red;font-weight:bolder;">
+            <marquee>AVISO DE SALUD: El nivel de volumen diario recomendado en auriculares es inferior a 85 dB durante un máximo de ocho horas. La configuración de audio de Noize Nación excede este limite, por lo tanto, escuchar por períodos prolongados de tiempo puede ocasionar pérdida en la audición parcial o total. Escuche con precaución.</marquee>
+         </div>
+         <!-- The Band Section -->
+         <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px" id="band">
+            <img src="./assets/img/logo.png" class="responsive"alt="Logo Noize Nación">
+            <h3 class="w3-justify">Radio Open Source que difunde lo mas selecto y undeground en música electrónica, Transmitiendo por internet desde Saltillo Coahuila México.</h3>
+            <div id="streams" class="w3-container  w3-center w3-xlarge" id="contact">
+               <br>
+               <!--INICIO REPRODUCTOR -->
+               <div class="radio-container">
+                  <div class="player">
+                     <div class="logo">NOIZE NACIÓN</div>
+                     <div class="live">● LIVE STREAM</div>
+                     <button id="playBtn">▶</button>
+                     <div class="controls">
+                        <input type="range" id="volume" min="0" max="1" step="0.01" value="0.8">
+                     </div>
+                  </div>
+               </div>
+               <audio id="radio" preload="none">
+                  <source src="https://a11.asurahosting.com:8940/radio.mp3" type="audio/mpeg">
+               </audio>
+            </div>
+            <script>
+               const radio = document.getElementById("radio")
+               const playBtn = document.getElementById("playBtn")
+               const volume = document.getElementById("volume")
+               
+               let playing = false
+               
+               playBtn.addEventListener("click", function(){
+               
+               if(!playing){
+               radio.play()
+               playBtn.innerHTML="❚❚"
+               playing=true
+               }else{
+               radio.pause()
+               playBtn.innerHTML="▶"
+               playing=false
+               }
+               
+               })
+               
+               volume.addEventListener("input", function(){
+               radio.volume = volume.value
+               })
+               
+            </script>
+            <h2 class="w3-container w3-center w3-xlarge">Retransmisores de Noize Nación Radio</h2>
+            <div class="container">
+               <iframe class="responsive-iframe" src="./slider/index.html"></iframe>
+            </div>
+            <!--<a href="https://stream.streamaudio.de:8000/noize-nacion-radio.m3u"><i class="fa fa-file-audio-o w3-hover-opacity"></i></a>
+               <a href="#"><i class="fa fa-chrome w3-hover-opacity"></i></a>
+               <a href="https://stream.streamaudio.de:8000/noize-nacion-radio" target="_blank"><i class="fa fa-html5 w3-hover-opacity"></i></a>
+               <a href="vr/"><i class="fa fa-vr-cardboard w3-hover-opacity"></i></a>-->
+         </div>
+      </div>
+      </div>
+      <!-- The Tour Section -->
+      <div class="w3-black">
+         <div id="wiki" class="w3-container w3-content w3-padding-64" style="max-width:800px">
+            <h2  class="w3-xlarge w3-center">Historia</h2>
+            <h3 align="justify" class="historia"><i>"Proyecto que nace en Agosto de 2015 de la idea de llevar a los oídos de todo el mundo, lo mejor, más selecto, misterioso y desconocido en música electrónica, creada por <a href="https://www.instagram.com/orlandohc/" target="_blank">Orlando Hernandez Cruz (aka Masterk3y)</a>; Iniciando transmisiones en la pequeña ciudad de Nueva Rosita y posteriormente trasladándose a la ciudad de Saltillo en el estado de Coahuila, Noize Nacion es la única Estación de Radio 100% de Música Electrónica en el Norte de México. Hoy en día se posiciona en los primeros lugares de popularidad y se retransmite en mas de 15 plataformas siendo del agrado de los radioescuchas a nivel mundial." </i><br><br>El flujo de audio principal de Noize Nación es soportado por AsuraHosting y Stream Audio. La infraestructura de transmisión se encuentra distribuida en servidores ubicados en Nueva York y Letonia, lo que garantiza alta disponibilidad y alcance internacional. <br><br> Noize Nación utiliza Stereo Tool como procesador de audio profesional, optimizando la calidad sonora para ofrecer una experiencia consistente y con estándar de radiodifusión real. Sin importar dónde se escuche, Noize Nación mantiene un sonido nítido, optimizado y profesional.<br><br> Si eres DJ o Productor, puedes transmitir tus sets o eventos masivos en vivo por Noize Nación, si deseas mas información envía un <a href="https://wa.me/+528617989375">WhatsAPP.</a></h3>
+            <!--<div class="w3-row-padding w3-padding-32" style="margin:0 -16px">
+               <div class="w3-third w3-margin-bottom">
+                 <div class="w3-container w3-white">
+                   <p><b>New York</b></p>
+                   <p class="w3-opacity">Fri 27 Nov 2016</p>
+                   <p>Praesent tincidunt sed tellus ut rutrum sed vitae justo.</p>
+                   <button class="w3-button w3-black w3-margin-bottom" onclick="document.getElementById('ticketModal').style.display='block'">Buy Tickets</button>
+                 </div>
+               </div>
+               <div class="w3-third w3-margin-bottom">
+                 <div class="w3-container w3-white">
+                   <p><b>Paris</b></p>
+                   <p class="w3-opacity">Sat 28 Nov 2016</p>
+                   <p>Praesent tincidunt sed tellus ut rutrum sed vitae justo.</p>
+                   <button class="w3-button w3-black w3-margin-bottom" onclick="document.getElementById('ticketModal').style.display='block'">Buy Tickets</button>
+                 </div>
+               </div>
+               <div class="w3-third w3-margin-bottom">
+                 <div class="w3-container w3-white">
+                   <p><b>San Francisco</b></p>
+                   <p class="w3-opacity">Sun 29 Nov 2016</p>
+                   <p>Praesent tincidunt sed tellus ut rutrum sed vitae justo.</p>
+                   <button class="w3-button w3-black w3-margin-bottom" onclick="document.getElementById('ticketModal').style.display='block'">Buy Tickets</button>
+                 </div>
+               </div>
+               </div>-->
+         </div>
+      </div>
+      <div id="social" class="w3-container w3-padding-32 w3-center w3-light-grey w3-xlarge" id="contact">
+         <h2 class="w3-container w3-center w3-light-grey w3-xlarge">Comparte Noize Nación</h2>
+         <!-- ShareThis BEGINS -->
+         <div class="sharethis-share-buttons" data-type="inline-share-buttons">
+            <span data-network="facebook"></span>
+            <span data-network="twitter"></span>
+            <span data-network="linkedin"></span>
+            <span data-network="email"></span>
+            <span data-network="sharethis"></span>
+         </div>
+         <!-- ShareThis ENDS -->      
+      </div>
+      <!-- The Contact Section -->
+      <div id="social" class="w3-container w3-center w3-light-grey w3-xlarge" id="contact">
+         <h2 class="w3-container w3-center w3-light-grey w3-xlarge">Contacto</h2>
+         <div class="fb-like" data-href="https://www.facebook.com/noizenacion/" data-width="" data-layout="button_count" data-action="like" data-size="large" data-show-faces="false" data-share="false"></div>
+         <a href="https://github.com/OrlandoHC/noizenacion" target="_blank"><i class="fa fa-github w3-hover-opacity"></i></a>
+         <a href="mailto:contacto@noizenacion.com" target="_blank"><i class="fa fa-envelope w3-hover-opacity"></i></a>
+         <a href="tel://8617989375"><i class="fa fa-phone w3-hover-opacity"></i></a>
+         <a href="https://wa.me/+528617989375"><i class="fa fa-whatsapp w3-hover-opacity"></i></a>
+         <br>
+         <br>
+      </div>
+      <div style="text-align:center; margin-top:20px;">
 
-<!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
-<div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
-  <a href="#" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Streams</a>
-  <a href="#wiki" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Wiki</a>
-    <a href="./streamaudio/" target="_blank" class="w3-bar-item w3-button w3-padding-large">Directorio de Estaciones</a>
-    <a href="https://stream.streamaudio.de:8000/?mount=/noize-nacion-radio" target="_blank" class="w3-bar-item w3-button w3-padding-large">Stats</a>
-
-    <a href="#social" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Contacto</a>
-</div>
-
-
-<!-- Page content -->
-<div class="w3-content" style="max-width:2000px;margin-top:45px">
-  <br>
-  <div style="color:red;font-weight:bolder;"><marquee>AVISO DE SALUD: El nivel de volumen diario recomendado en auriculares es inferior a 85 dB durante un máximo de ocho horas. La configuración de audio de Noize Nación excede este limite, por lo tanto, escuchar por períodos prolongados de tiempo puede ocasionar pérdida en la audición parcial o total. Escuche con precaución.</marquee></div>
-  <!-- The Band Section -->
-  <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px" id="band">
-    <img src="./assets/img/logo.png" class="responsive"alt="Logo Noize Nación">
-   <h3 class="w3-justify">Radio Open Source que difunde lo mas selecto y undeground en música electrónica, Transmitiendo por internet desde Saltillo Coahuila México.</h3>
-   <div id="streams" class="w3-container  w3-center w3-xlarge" id="contact">
-     <br>
-    <!--INICIO REPRODUCTOR -->
-
-<div class="radio-container">    
-<div class="player">
-
-<div class="logo">NOIZE NACIÓN</div>
-<div class="live">● LIVE STREAM</div>
-
-<button id="playBtn">▶</button>
-
-<div class="controls">
-<input type="range" id="volume" min="0" max="1" step="0.01" value="0.8">
-</div>
-
-</div>
-
-</div>
-
-<audio id="radio" preload="none">
-<source src="https://a11.asurahosting.com:8940/radio.mp3" type="audio/mpeg">
-</audio>
-</div>
-<script>
-
-const radio = document.getElementById("radio")
-const playBtn = document.getElementById("playBtn")
-const volume = document.getElementById("volume")
-
-let playing = false
-
-playBtn.addEventListener("click", function(){
-
-if(!playing){
-radio.play()
-playBtn.innerHTML="❚❚"
-playing=true
-}else{
-radio.pause()
-playBtn.innerHTML="▶"
-playing=false
-}
-
-})
-
-volume.addEventListener("input", function(){
-radio.volume = volume.value
-})
-
+<!-- Default Statcounter code for Noize Nación Radio -->
+<script type="text/javascript">
+var sc_project=13210079; 
+var sc_invisible=0; 
+var sc_security="8ff9678e"; 
+var scJsHost = "https://";
+document.write("<sc"+"ript type='text/javascript' src='" + scJsHost+
+"statcounter.com/counter/counter.js'></"+"script>");
 </script>
 
+<noscript>
+<div class="statcounter">
+<a title="free web stats" href="https://statcounter.com/" target="_blank">
+<img class="statcounter"
+src="https://c.statcounter.com/13210079/0/8ff9678e/0/"
+alt="free web stats" referrerPolicy="no-referrer-when-downgrade">
+</a>
+</div>
+</noscript>
 
-    <h2 class="w3-container w3-center w3-xlarge">Retransmisores de Noize Nación Radio</h2>
-    <div class="container">
-      <iframe class="responsive-iframe" src="./slider/index.html"></iframe>
-    </div>
-    <!--<a href="https://stream.streamaudio.de:8000/noize-nacion-radio.m3u"><i class="fa fa-file-audio-o w3-hover-opacity"></i></a>
-    <a href="#"><i class="fa fa-chrome w3-hover-opacity"></i></a>
-    <a href="https://stream.streamaudio.de:8000/noize-nacion-radio" target="_blank"><i class="fa fa-html5 w3-hover-opacity"></i></a>
-    <a href="vr/"><i class="fa fa-vr-cardboard w3-hover-opacity"></i></a>-->
-
-    </div>
+</div>
+      </div>
+      <!-- End Page Content -->
+      <!--<footer class="w3-container w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge">
+         </footer>-->
+      <!-- Image of location/map -->
+      <!--<img src="./assets/img/footer.jpg" class="w3-image w3-greyscale-min" style="width:100%">-->
+      <!-- REPRODUCTOR CON CARATULAS (FALLANDO) -->
+      <!-- Inicio. radio hosting USAstreams.com html5 player -->
+      <!-- Licencia: GRATIS-XDF4543ERF -->
+      <!--<div style = "bottom: 0;display: flex;height: 80px;left: 0;position: fixed;right: 0;width: 100%;z-index: 1500;overflow: hidden;" ><iframe name="contenedorPlayer" class="cuadroBordeado" allow="autoplay" width="100%" height="80px" marginwidth=0 marginheight=0 hspace=0 vspace=0 frameborder=0 scrolling=no  src="https://cp.usastreams.com/html5-player-barra-omega.aspx?stream=https://stream.streamaudio.de:8000/noize-nacion-radio&fondo=12&formato=mpeg&color=3&titulo=2&autoStart=1&vol=10&nombre=Noize+Naci%c3%b3n+Radio&botonPlay=1&imagen=https://cp.usastreams.com/playerHTML5/img/cover.png&server=https://https://134.122.118.197/radio/8000/noizenacion"><a href="https://www.usastreams.com/" alt = "Usastreams.com posicionamiento web, Servicios SEO y SEM, servicios streaming" title="Transmisiones de Video por Internet ,streaming para difusión de contenidos multimedia ,Servicio de Streaming Para Radios ,Streaming Para Radios,">Servicios SEO ,streaming hosting tv</a></iframe></div>-->
+      <!-- En players responsive puede modificar el weight a sus necesidades, Por favor no modifique el resto del codigo para poder seguir ofreciendo este servicio gratis  -->
+      <!-- Fin. USAstreams.com html5 player -->
+      <!-- Footer -->
+      <script>
+         // Used to toggle the menu on small screens when clicking on the menu button
+         function myFunction() {
+           var x = document.getElementById("navDemo");
+           if (x.className.indexOf("w3-show") == -1) {
+             x.className += " w3-show";
+           } else { 
+             x.className = x.className.replace(" w3-show", "");
+           }
+         }
+         
+         // When the user clicks anywhere outside of the modal, close it
+         var modal = document.getElementById('ticketModal');
+         window.onclick = function(event) {
+           if (event.target == modal) {
+             modal.style.display = "none";
+           }
+         }
+      </script>
      
-  </div>
-  </div>
 
 
-  <!-- The Tour Section -->
-  <div class="w3-black">
-    <div id="wiki" class="w3-container w3-content w3-padding-64" style="max-width:800px">
-      <h2  class="w3-xlarge w3-center">Historia</h2>
-      <h3 align="justify" class="historia"><i>"Proyecto que nace en Agosto de 2015 de la idea de llevar a los oídos de todo el mundo, lo mejor, más selecto, misterioso y desconocido en música electrónica, creada por <a href="https://www.instagram.com/orlandohc/" target="_blank">Orlando Hernandez Cruz (aka Masterk3y)</a>; Iniciando transmisiones en la pequeña ciudad de Nueva Rosita y posteriormente trasladándose a la ciudad de Saltillo en el estado de Coahuila, Noize Nacion es la única Estación de Radio 100% de Música Electrónica en el Norte de México. Hoy en día se posiciona en los primeros lugares de popularidad y se retransmite en mas de 15 plataformas siendo del agrado de los radioescuchas a nivel mundial." </i><br><br>El flujo de audio principal de Noize Nación es soportado por AsuraHosting y Stream Audio. La infraestructura de transmisión se encuentra distribuida en servidores ubicados en Nueva York y Letonia, lo que garantiza alta disponibilidad y alcance internacional. <br><br> Noize Nación utiliza Stereo Tool como procesador de audio profesional, optimizando la calidad sonora para ofrecer una experiencia consistente y con estándar de radiodifusión real. Sin importar dónde se escuche, Noize Nación mantiene un sonido nítido, optimizado y profesional.<br><br> Si eres DJ o Productor, puedes transmitir tus sets o eventos masivos en vivo por Noize Nación, si deseas mas información envía un <a href="https://wa.me/+528617989375">WhatsAPP.</a></h3>
-
-      <!--<div class="w3-row-padding w3-padding-32" style="margin:0 -16px">
-        <div class="w3-third w3-margin-bottom">
-          <div class="w3-container w3-white">
-            <p><b>New York</b></p>
-            <p class="w3-opacity">Fri 27 Nov 2016</p>
-            <p>Praesent tincidunt sed tellus ut rutrum sed vitae justo.</p>
-            <button class="w3-button w3-black w3-margin-bottom" onclick="document.getElementById('ticketModal').style.display='block'">Buy Tickets</button>
-          </div>
-        </div>
-        <div class="w3-third w3-margin-bottom">
-          <div class="w3-container w3-white">
-            <p><b>Paris</b></p>
-            <p class="w3-opacity">Sat 28 Nov 2016</p>
-            <p>Praesent tincidunt sed tellus ut rutrum sed vitae justo.</p>
-            <button class="w3-button w3-black w3-margin-bottom" onclick="document.getElementById('ticketModal').style.display='block'">Buy Tickets</button>
-          </div>
-        </div>
-        <div class="w3-third w3-margin-bottom">
-          <div class="w3-container w3-white">
-            <p><b>San Francisco</b></p>
-            <p class="w3-opacity">Sun 29 Nov 2016</p>
-            <p>Praesent tincidunt sed tellus ut rutrum sed vitae justo.</p>
-            <button class="w3-button w3-black w3-margin-bottom" onclick="document.getElementById('ticketModal').style.display='block'">Buy Tickets</button>
-          </div>
-        </div>
-      </div>-->
-
-    </div>
-  </div>
-
-
-  <div id="social" class="w3-container w3-padding-32 w3-center w3-light-grey w3-xlarge" id="contact">
-      <h2 class="w3-container w3-center w3-light-grey w3-xlarge">Comparte Noize Nación</h2>
-<script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js" defer></script>      </div>
-  <!-- The Contact Section -->
-  <div id="social" class="w3-container w3-center w3-light-grey w3-xlarge" id="contact">
-    <h2 class="w3-container w3-center w3-light-grey w3-xlarge">Contacto</h2>
-    <div class="fb-like" data-href="https://www.facebook.com/noizenacion/" data-width="" data-layout="button_count" data-action="like" data-size="large" data-show-faces="false" data-share="false"></div>
-    <a href="https://github.com/OrlandoHC/noizenacion" target="_blank"><i class="fa fa-github w3-hover-opacity"></i></a>
-    <a href="mailto:contacto@noizenacion.com" target="_blank"><i class="fa fa-envelope w3-hover-opacity"></i></a>
-    <a href="tel://8617989375"><i class="fa fa-phone w3-hover-opacity"></i></a>
-    <a href="https://wa.me/+528617989375"><i class="fa fa-whatsapp w3-hover-opacity"></i></a>
-
-    <br>
-    <br>
-
-  </div>  
-  </div>
-  <!-- End Page Content -->
-
-<!--<footer class="w3-container w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge">
-  </footer>-->
-<!-- Image of location/map -->
-<!--<img src="./assets/img/footer.jpg" class="w3-image w3-greyscale-min" style="width:100%">-->
-
-<!-- REPRODUCTOR CON CARATULAS (FALLANDO) -->
- <!-- Inicio. radio hosting USAstreams.com html5 player -->
-<!-- Licencia: GRATIS-XDF4543ERF -->
-<!--<div style = "bottom: 0;display: flex;height: 80px;left: 0;position: fixed;right: 0;width: 100%;z-index: 1500;overflow: hidden;" ><iframe name="contenedorPlayer" class="cuadroBordeado" allow="autoplay" width="100%" height="80px" marginwidth=0 marginheight=0 hspace=0 vspace=0 frameborder=0 scrolling=no  src="https://cp.usastreams.com/html5-player-barra-omega.aspx?stream=https://stream.streamaudio.de:8000/noize-nacion-radio&fondo=12&formato=mpeg&color=3&titulo=2&autoStart=1&vol=10&nombre=Noize+Naci%c3%b3n+Radio&botonPlay=1&imagen=https://cp.usastreams.com/playerHTML5/img/cover.png&server=https://https://134.122.118.197/radio/8000/noizenacion"><a href="https://www.usastreams.com/" alt = "Usastreams.com posicionamiento web, Servicios SEO y SEM, servicios streaming" title="Transmisiones de Video por Internet ,streaming para difusión de contenidos multimedia ,Servicio de Streaming Para Radios ,Streaming Para Radios,">Servicios SEO ,streaming hosting tv</a></iframe></div>-->
-<!-- En players responsive puede modificar el weight a sus necesidades, Por favor no modifique el resto del codigo para poder seguir ofreciendo este servicio gratis  -->
-<!-- Fin. USAstreams.com html5 player -->
-<!-- Footer -->
-<script>
-// Used to toggle the menu on small screens when clicking on the menu button
-function myFunction() {
-  var x = document.getElementById("navDemo");
-  if (x.className.indexOf("w3-show") == -1) {
-    x.className += " w3-show";
-  } else { 
-    x.className = x.className.replace(" w3-show", "");
-  }
-}
-
-// When the user clicks anywhere outside of the modal, close it
-var modal = document.getElementById('ticketModal');
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
-</script>
-</body>
+    </body>
 </html>
