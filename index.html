@@ -166,5 +166,79 @@
            }
          }
       </script>
+      <!-- Modal Dinámica Noize Nación -->
+<div id="promoModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>🎟️ Giveaway 🎟️</h2>
+    <p>
+    Noize Nación te invita a <b>LUMINA NIGHTS con Nervo, Colossio y Cabizbajo en Saltillo @ Parque las Maravillas</b>
+    </p>
+
+    <p>
+    📱 Participar es muy sencillo: <br>Envía una captura de pantalla escuchando Noize Nación por WhatsApp
+    y automáticamente estarás participando.
+    </p>
+
+    <p>
+    📅 La rifa se realizará el <b>18 de marzo a las 8:00 PM</b>.
+    </p>
+
+    <a href="https://wa.me/8617989375" target="_blank" class="btn">
+      Participar ahora
+    </a>
+  </div>
+</div>
+
+<style>
+.modal{
+display:none;
+position:fixed;
+z-index:999;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+}
+
+.modal-content{
+background:#111;
+color:white;
+margin:15% auto;
+padding:20px;
+width:90%;
+max-width:400px;
+text-align:center;
+border-radius:10px;
+}
+
+.close{
+float:right;
+font-size:28px;
+cursor:pointer;
+}
+
+.btn{
+display:inline-block;
+margin-top:15px;
+padding:10px 20px;
+background:#00ff9c;
+color:black;
+text-decoration:none;
+border-radius:5px;
+font-weight:bold;
+}
+</style>
+
+<script>
+window.onload = function(){
+document.getElementById("promoModal").style.display="block";
+}
+
+document.querySelector(".close").onclick=function(){
+document.getElementById("promoModal").style.display="none";
+}
+</script>
    </body>
 </html>
