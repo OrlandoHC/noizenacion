@@ -4,8 +4,19 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
 
+<url>
+  <loc>https://noizenacion.com/</loc>
+  <lastmod>2017-02-06T21:08:53+00:00</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://noizenacion.com/index.html</loc>
+  <lastmod>2017-02-06T21:08:53+00:00</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.80</priority>
+</url>
 <url>
   <loc>https://noizenacion.netlify.app/</loc>
   <lastmod>2017-02-06T21:08:53+00:00</lastmod>
@@ -16,6 +27,6 @@
   <loc>https://noizenacion.netlify.app/index.html</loc>
   <lastmod>2017-02-06T21:08:53+00:00</lastmod>
   <changefreq>monthly</changefreq>
-  <priority>0.80</priority>
+  <priority>1.00</priority>
 </url>
 </urlset>
