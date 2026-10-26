@@ -44,37 +44,6 @@
       height: 100%;
       border: none;
       }
-      /* ===== Aviso 4:20 ===== */
-      #aviso420 {
-      position: fixed;
-      right: 16px;
-      bottom: 16px;
-      z-index: 2000;
-      display: none;
-      align-items: center;
-      gap: 10px;
-      max-width: calc(100vw - 32px);
-      padding: 10px 14px;
-      background: #000;
-      color: #fff;
-      border: 2px solid #2ecc40;
-      border-radius: 14px;
-      box-shadow: 0 0 18px rgba(46, 204, 64, 0.65);
-      cursor: pointer;
-      font-family: "Lato", sans-serif;
-      line-height: 1.2;
-      }
-      #aviso420.visible { display: flex; animation: aviso420-flota 2.4s ease-in-out infinite; }
-      #aviso420 svg { width: 48px; height: 48px; flex: none; fill: #2ecc40; filter: drop-shadow(0 0 6px #2ecc40); }
-      #aviso420 .a420-hora { font-size: 20px; font-weight: 700; color: #2ecc40; }
-      #aviso420 .a420-texto { font-size: 14px; }
-      @keyframes aviso420-flota {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
-      }
-      @media (prefers-reduced-motion: reduce) {
-      #aviso420.visible { animation: none; }
-      }
    </style>
    <body>
       <script>
@@ -178,63 +147,5 @@
       <!-- En players responsive puede modificar el weight a sus necesidades, Por favor no modifique el resto del codigo para poder seguir ofreciendo este servicio gratis  -->
       <!-- Fin. USAstreams.com html5 player -->
       <!-- Footer -->
-
-      <!-- Aviso 4:20 (aparece a las 04:20 y 16:20, sin importar la canción) -->
-      <div id="aviso420" role="status" aria-live="polite" title="Toca para cerrar">
-         <svg viewBox="-50 -50 100 100" aria-hidden="true">
-            <defs>
-               <path id="hoja420" d="M0 0 C-6 -14 -5 -30 0 -44 C5 -30 6 -14 0 0 Z"/>
-            </defs>
-            <use href="#hoja420" transform="rotate(-75) scale(0.5)"/>
-            <use href="#hoja420" transform="rotate(75) scale(0.5)"/>
-            <use href="#hoja420" transform="rotate(-50) scale(0.72)"/>
-            <use href="#hoja420" transform="rotate(50) scale(0.72)"/>
-            <use href="#hoja420" transform="rotate(-25) scale(0.92)"/>
-            <use href="#hoja420" transform="rotate(25) scale(0.92)"/>
-            <use href="#hoja420"/>
-            <rect x="-1.5" y="0" width="3" height="16" rx="1.5"/>
-         </svg>
-         <div>
-            <div class="a420-hora">¡Son las 4:20!</div>
-            <div class="a420-texto">Hora de prender uno y disfrutar Noize Nación</div>
-         </div>
-      </div>
-      <script>
-         (function () {
-            // Configuración
-            var HORAS_420 = [4, 16];   // 04:20 y 16:20
-            var MINUTO_420 = 20;
-            var DURACION_MIN = 10;     // cuántos minutos se queda visible después de las 4:20
-            var aviso = document.getElementById('aviso420');
-            var cerradoEnEstaVentana = null; // guarda qué "ventana" de 4:20 cerró la persona
-
-            function ventanaActual() {
-               var ahora = new Date();
-               var minutosDelDia = ahora.getHours() * 60 + ahora.getMinutes();
-               for (var i = 0; i < HORAS_420.length; i++) {
-                  var inicio = HORAS_420[i] * 60 + MINUTO_420;
-                  if (minutosDelDia >= inicio && minutosDelDia < inicio + DURACION_MIN) {
-                     return ahora.toDateString() + '-' + HORAS_420[i];
-                  }
-               }
-               return null;
-            }
-
-            function revisar() {
-               var forzado = /[?&]420=1/.test(location.search); // para pruebas: index.html?420=1
-               var ventana = forzado ? 'prueba' : ventanaActual();
-               var mostrar = ventana !== null && ventana !== cerradoEnEstaVentana;
-               aviso.classList.toggle('visible', mostrar);
-            }
-
-            aviso.addEventListener('click', function () {
-               cerradoEnEstaVentana = /[?&]420=1/.test(location.search) ? 'prueba' : ventanaActual();
-               aviso.classList.remove('visible');
-            });
-
-            revisar();
-            setInterval(revisar, 15000);
-         })();
-      </script>
    </body>
 </html>
