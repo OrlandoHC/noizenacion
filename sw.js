@@ -1,73 +1,87 @@
-/*
- * @license
- * Your First PWA Codelab (https://g.co/codelabs/pwa)
- * Copyright 2019 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License
- */
 'use strict';
 
-// CODELAB: Update cache names any time any of the cached files change.
-const CACHE_NAME = 'static-cache-v1';
+// Sube este número cada vez que cambies archivos del sitio (CSS, JS, imágenes)
+// para que los visitantes descarguen la versión nueva.
+const CACHE_NAME = 'noize-nacion-v2';
 
-// CODELAB: Add list of files to cache here.
-const FILES_TO_CACHE = [
-  './offline.html',
-];
+// Página que se muestra si no hay internet y no hay copia guardada de la página.
+const OFFLINE_URL = './offline.html';
+const PRECACHE = [OFFLINE_URL];
 
 self.addEventListener('install', (evt) => {
-  console.log('[ServiceWorker] Install');
-// CODELAB: Precache static resources here.
-evt.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log('[ServiceWorker] Pre-caching offline page');
-      return cache.addAll(FILES_TO_CACHE);
-    })
-);
+  evt.waitUntil(
+    caches.open(CACHE_NAME).then((cache) =>
+      // Se guarda archivo por archivo: si offline.html no existe, la instalación NO falla.
+      Promise.all(
+        PRECACHE.map((url) =>
+          cache.add(url).catch(() => console.warn('[SW] No se pudo precachear', url))
+        )
+      )
+    )
+  );
   self.skipWaiting();
 });
 
 self.addEventListener('activate', (evt) => {
-  console.log('[ServiceWorker] Activate');
-  // CODELAB: Remove previous cached data from disk.
   evt.waitUntil(
-    caches.keys().then((keyList) => {
-      return Promise.all(keyList.map((key) => {
-        if (key !== CACHE_NAME) {
-          console.log('[ServiceWorker] Removing old cache', key);
-          return caches.delete(key);
-        }
-      }));
-    })
-);
-
+    caches.keys().then((keys) =>
+      Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key)))
+    )
+  );
   self.clients.claim();
 });
 
 self.addEventListener('fetch', (evt) => {
-  console.log('[ServiceWorker] Fetch', evt.request.url);
-// CODELAB: Add fetch event handler here.
-if (evt.request.mode !== 'navigate') {
-  // Not a page navigation, bail.
-  return;
-}
-evt.respondWith(
-    fetch(evt.request)
-        .catch(() => {
-          return caches.open(CACHE_NAME)
-              .then((cache) => {
-                return cache.match('/offline.html');
-              });
-        })
-);
+  const req = evt.request;
+
+  if (req.method !== 'GET') return;
+
+  const url = new URL(req.url);
+
+  // Todo lo que no sea de noizenacion (el stream de audio, rcast, CDNs, ShareThis, Facebook...)
+  // va directo a la red. Nunca se toca el audio.
+  if (url.origin !== self.location.origin) return;
+
+  // Peticiones parciales de audio/video: directo a la red.
+  if (req.headers.has('range')) return;
+
+  if (req.mode === 'navigate') {
+    evt.respondWith(paginaConRespaldo(req));
+  } else {
+    evt.respondWith(archivoEstatico(req));
+  }
 });
+
+// Páginas: primero la red (así siempre ves la versión nueva). Si no hay internet,
+// la última copia buena; si tampoco hay, offline.html; y como último recurso, un aviso simple.
+async function paginaConRespaldo(req) {
+  const cache = await caches.open(CACHE_NAME);
+  try {
+    const resp = await fetch(req);
+    if (resp.ok) cache.put(req, resp.clone());
+    return resp;
+  } catch (err) {
+    return (
+      (await cache.match(req)) ||
+      (await cache.match(OFFLINE_URL)) ||
+      new Response('<h1>Sin conexión</h1><p>Vuelve a intentarlo cuando tengas internet.</p>', {
+        status: 503,
+        headers: { 'Content-Type': 'text/html; charset=utf-8' },
+      })
+    );
+  }
+}
+
+// CSS, JS e imágenes del sitio: se sirven al instante desde la copia guardada
+// y en segundo plano se actualiza la copia para la próxima visita.
+async function archivoEstatico(req) {
+  const cache = await caches.open(CACHE_NAME);
+  const guardado = await cache.match(req);
+  const desdeRed = fetch(req)
+    .then((resp) => {
+      if (resp.ok) cache.put(req, resp.clone());
+      return resp;
+    })
+    .catch(() => guardado || Response.error());
+  return guardado || desdeRed;
+}

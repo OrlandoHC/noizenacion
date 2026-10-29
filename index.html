@@ -4,6 +4,10 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <meta name="theme-color" content="#000000" />
+   <meta name="mobile-web-app-capable" content="yes">
+   <meta name="apple-mobile-web-app-capable" content="yes">
+   <meta name="apple-mobile-web-app-status-bar-style" content="black">
+   <meta name="apple-mobile-web-app-title" content="Noize Nación">
    <meta name="title" content="Noize Nación | Radio Electrónica en México"/>
    <meta name="description" content="Radio Open Source que difunde lo mas selecto y undeground en música electrónica, Transmitiendo por internet desde Saltillo Coahuila México.">
    <meta name="keywords" content="Radio Electrónica en México, Radio Electro México, Radio Underground Saltillo">
@@ -57,6 +61,24 @@
       /* Antes de que slick arranque, evita que los logos salten */
       .customer-logos:not(.slick-initialized) { display: flex; overflow: hidden; }
       .customer-logos:not(.slick-initialized) > a { flex: 0 0 16.66%; padding: 0 10px; box-sizing: border-box; }
+
+      /* ===== Reproductor propio de Noize Nación ===== */
+      #nn-player { max-width: 420px; margin: 16px auto 32px; padding: 24px 16px; background: #222; color: #fff; border-radius: 16px; text-align: center; }
+      #nn-player .nn-caratula { width: 160px; height: 160px; border-radius: 50%; border: 6px solid #555; object-fit: cover; }
+      #nn-player .nn-nombre { margin-top: 12px; font-size: 22px; }
+      #nn-player .nn-estado { min-height: 24px; margin: 6px 0 16px; font-size: 14px; letter-spacing: 0.06em; color: #bbb; }
+      #nn-player.en-vivo .nn-estado { color: #ff6a2b; font-weight: 700; }
+      #nn-player .nn-boton { width: 72px; height: 72px; border: 0; border-radius: 50%; background: #e8590c; color: #111; font-size: 28px; cursor: pointer; }
+      #nn-player .nn-boton:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+      #nn-player .nn-boton .fa-play { margin-left: 4px; }
+      #nn-player.en-vivo .nn-caratula { animation: nn-pulso 2.4s ease-in-out infinite; }
+      @keyframes nn-pulso {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(232, 89, 12, 0.5); }
+      50% { box-shadow: 0 0 0 14px rgba(232, 89, 12, 0); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+      #nn-player.en-vivo .nn-caratula { animation: none; }
+      }
 
       /* ===== Aviso 4:20 ===== */
       #aviso420 {
@@ -144,7 +166,18 @@
                <!--<iframe src="https://134.122.118.197/public/noizenacion/embed" frameborder="0" allowtransparency="false" style="width: 100%; min-height: 150px; border: 0;"></iframe>-->
                <!-- RCAST.NET - START EMBEDDED PLAYER --> 
                <!-- RCAST.NET - START EMBEDDED PLAYER -->
+               <!-- Reproductor de rcast (desactivado). Para volver a usarlo, descomenta esta línea y borra el bloque "nn-player" de abajo.
                <iframe width="100%" height="450" src="https://players.rcast.net/luna/62949" frameborder="0" scrolling="no" allow="autoplay"></iframe>
+               -->
+
+               <!-- Reproductor propio: el navegador pausa el audio cuando entra otra fuente y aquí se reconecta al vivo (ver script al final) -->
+               <div id="nn-player">
+                  <img class="nn-caratula" src="./assets/img/nnacion_ico.png" alt="Noize Nación Radio">
+                  <div class="nn-nombre">Noize Nación Radio</div>
+                  <div id="nn-estado" class="nn-estado" role="status" aria-live="polite">Toca el botón para escuchar</div>
+                  <button id="nn-boton" class="nn-boton" type="button" aria-label="Reproducir"><i class="fa fa-play" aria-hidden="true"></i></button>
+                  <audio id="nn-audio" preload="none"></audio>
+               </div>
                <div style="overflow:hidden; height:0px; width:0px;"><a href="https://www.rcast.net" title="Internet Radio Hosting">RCAST.NET</a></div>
                <!-- RCAST.NET - END EMBEDDED PLAYER -->
                <!-- RCAST.NET - END EMBEDDED PLAYER -->
@@ -314,6 +347,160 @@
                ]
             });
          });
+      </script>
+
+      <!-- Reproductor propio: pausa por otro audio y reconexión al stream en vivo -->
+      <script>
+         (function () {
+            var STREAM_URL = 'https://stream.streamaudio.de:8000/noize-nacion-radio';
+
+            var audio  = document.getElementById('nn-audio');
+            var boton  = document.getElementById('nn-boton');
+            var texto  = document.getElementById('nn-estado');
+            var player = document.getElementById('nn-player');
+            var icono  = boton.querySelector('i');
+
+            // Estados: detenido | conectando | reproduciendo | interrumpido | reintentando | error
+            var estado = 'detenido';
+            var momentoPausa = 0;        // cuándo nos pausó el sistema (otro audio, llamada, etc.)
+            var ultimoConectar = 0;      // para ignorar el "pause" que genera cambiar el src
+            var reintentos = 0;
+            var temporizadorReintento = null;
+            var temporizadorLimpieza = null;
+
+            var TEXTOS = {
+               detenido:      'Toca el botón para escuchar',
+               conectando:    'Conectando…',
+               reproduciendo: 'EN VIVO',
+               interrumpido:  'Pausado por otro audio. Toca ▶ para volver al vivo',
+               reintentando:  'Reconectando…',
+               error:         'Sin conexión. Toca ▶ para reintentar'
+            };
+
+            function ponerEstado(nuevo) {
+               estado = nuevo;
+               texto.textContent = TEXTOS[nuevo];
+               var activo = (nuevo === 'conectando' || nuevo === 'reproduciendo' || nuevo === 'reintentando');
+               player.classList.toggle('en-vivo', nuevo === 'reproduciendo');
+               icono.className = activo ? 'fa fa-pause' : 'fa fa-play';
+               boton.setAttribute('aria-label', activo ? 'Pausar' : 'Reproducir');
+               if ('mediaSession' in navigator) {
+                  navigator.mediaSession.playbackState = activo ? 'playing' : 'paused';
+               }
+            }
+
+            // Cierra la conexión al stream por completo (en vivo no sirve dejarlo "en pausa" descargando)
+            function cerrarConexion() {
+               audio.pause();
+               audio.removeAttribute('src');
+               audio.load();
+            }
+
+            // Abre una conexión nueva al stream: siempre arranca en el punto en vivo
+            function conectar() {
+               clearTimeout(temporizadorReintento);
+               clearTimeout(temporizadorLimpieza);
+               momentoPausa = 0;
+               ultimoConectar = Date.now();
+               ponerEstado(reintentos > 0 ? 'reintentando' : 'conectando');
+               audio.src = STREAM_URL;
+               var promesa = audio.play();
+               if (promesa && promesa.catch) {
+                  promesa.catch(function (err) {
+                     if (err.name === 'AbortError') return;                       // cambiamos el src mientras cargaba
+                     if (err.name === 'NotAllowedError') ponerEstado('interrumpido'); // el navegador pide un toque del usuario
+                     else programarReintento();
+                  });
+               }
+            }
+
+            // Pausa que pide el usuario
+            function detener() {
+               clearTimeout(temporizadorReintento);
+               clearTimeout(temporizadorLimpieza);
+               reintentos = 0;
+               momentoPausa = 0;
+               ponerEstado('detenido');   // se pone antes de pausar para que el evento "pause" se ignore
+               cerrarConexion();
+            }
+
+            function programarReintento() {
+               if (reintentos >= 5) {
+                  reintentos = 0;
+                  ponerEstado('error');
+                  cerrarConexion();
+                  return;
+               }
+               reintentos++;
+               ponerEstado('reintentando');
+               clearTimeout(temporizadorReintento);
+               temporizadorReintento = setTimeout(conectar, Math.min(2000 * reintentos, 10000));
+            }
+
+            // El sistema pausó el audio (otra app, llamada, auriculares desconectados...)
+            audio.addEventListener('pause', function () {
+               if (estado !== 'reproduciendo' && estado !== 'conectando') return; // pausa nuestra: se ignora
+               if (Date.now() - ultimoConectar < 500) return;                      // pausa causada por cambiar el src
+               momentoPausa = Date.now();
+               ponerEstado('interrumpido');
+               // Si el sistema no reanuda solo en 20 s, soltamos la conexión para no seguir descargando
+               clearTimeout(temporizadorLimpieza);
+               temporizadorLimpieza = setTimeout(function () {
+                  if (estado === 'interrumpido') cerrarConexion();
+               }, 20000);
+            });
+
+            audio.addEventListener('playing', function () {
+               // Si el sistema reanudó solo (p. ej. tras una llamada) pero estuvo pausado un buen rato,
+               // lo que suena es audio viejo del buffer: nos reconectamos para volver al vivo.
+               if (momentoPausa && Date.now() - momentoPausa > 5000) {
+                  conectar();
+                  return;
+               }
+               momentoPausa = 0;
+               reintentos = 0;
+               ponerEstado('reproduciendo');
+            });
+
+            // El servidor cortó la transmisión o se cayó la red
+            function fallo() {
+               if (!audio.getAttribute('src')) return;   // el error viene de que cerramos la conexión nosotros
+               if (estado === 'detenido' || estado === 'interrumpido') return;
+               programarReintento();
+            }
+            audio.addEventListener('error', fallo);
+            audio.addEventListener('ended', fallo);
+
+            // Volvió el internet mientras reintentábamos: reconectar sin esperar
+            window.addEventListener('online', function () {
+               if (estado === 'reintentando') {
+                  reintentos = 0;
+                  conectar();
+               }
+            });
+
+            boton.addEventListener('click', function () {
+               if (estado === 'detenido' || estado === 'interrumpido' || estado === 'error') {
+                  reintentos = 0;
+                  conectar();
+               } else {
+                  detener();
+               }
+            });
+
+            // Controles de la pantalla de bloqueo / notificación del celular
+            if ('mediaSession' in navigator) {
+               navigator.mediaSession.metadata = new MediaMetadata({
+                  title: 'Noize Nación Radio',
+                  artist: 'Música electrónica en vivo',
+                  album: 'noizenacion.com',
+                  artwork: [{ src: './assets/img/noizenacion_pwa.png', sizes: '512x512', type: 'image/png' }]
+               });
+               navigator.mediaSession.setActionHandler('play', function () { reintentos = 0; conectar(); });
+               navigator.mediaSession.setActionHandler('pause', detener);
+               navigator.mediaSession.setActionHandler('stop', detener);
+            }
+         })();
       </script>
    </body>
 </html>
