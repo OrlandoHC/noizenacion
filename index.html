@@ -58,6 +58,56 @@
       .customer-logos:not(.slick-initialized) { display: flex; overflow: hidden; }
       .customer-logos:not(.slick-initialized) > a { flex: 0 0 16.66%; padding: 0 10px; box-sizing: border-box; }
 
+      /* ===== Botón Alexa ===== */
+      .nn-alexa{
+        --nn-accent:#0a8fd6;
+        position:relative;display:inline-block;
+        font:400 14px/1.4 "Lato",system-ui,-apple-system,"Segoe UI",sans-serif;
+        color:inherit;
+      }
+      @media (prefers-color-scheme: dark){ .nn-alexa{ --nn-accent:#4cc3ff; } }
+      .nn-alexa__btn{
+        display:inline-flex;align-items:center;gap:.7em;
+        padding:.55em 1.05em .55em .8em;
+        background:transparent;color:inherit;cursor:pointer;font:inherit;
+        letter-spacing:.05em;text-align:left;
+        border:1px solid rgba(128,128,128,.45);
+        border:1px solid color-mix(in srgb,currentColor 28%,transparent);
+        border-radius:999px;
+        transition:border-color .25s,background-color .25s;
+      }
+      .nn-alexa__btn:hover,
+      .nn-alexa__btn[aria-expanded="true"]{
+        border-color:var(--nn-accent);
+        background:color-mix(in srgb,var(--nn-accent) 8%,transparent);
+      }
+      .nn-alexa__btn:focus-visible{outline:2px solid var(--nn-accent);outline-offset:3px}
+      .nn-alexa__ring{display:block;transition:transform .9s cubic-bezier(.3,.7,.2,1)}
+      .nn-alexa__btn:hover .nn-alexa__ring{transform:rotate(180deg)}
+      .nn-alexa__label small{display:block;font-size:.68em;letter-spacing:.18em;text-transform:uppercase;opacity:.55}
+      .nn-alexa__label b{font-weight:500}
+      .nn-alexa__panel{
+        position:absolute;left:50%;transform:translateX(-50%);top:calc(100% + 10px);z-index:50;
+        width:min(340px,86vw);padding:16px 18px;text-align:left;
+        background:#0e1116;color:#e8eaed;
+        border:1px solid rgba(255,255,255,.12);border-radius:10px;
+        box-shadow:0 12px 32px rgba(0,0,0,.45);
+        --nn-accent:#4cc3ff;
+      }
+      .nn-alexa__panel[hidden]{display:none}
+      .nn-alexa__cap{margin:0 0 8px;font-size:.68em;letter-spacing:.18em;text-transform:uppercase;opacity:.5}
+      .nn-alexa__cmd{
+        margin:0 0 14px;padding:2px 0 2px 12px;
+        border-left:2px solid var(--nn-accent);
+        font:500 .95em/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      }
+      .nn-alexa__row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+      .nn-alexa__copy,.nn-alexa__row a{
+        background:none;border:0;padding:0;cursor:pointer;font:inherit;font-size:.85em;
+        color:var(--nn-accent);text-decoration:underline;text-underline-offset:3px;
+      }
+      @media (prefers-reduced-motion:reduce){ .nn-alexa__ring,.nn-alexa__btn{transition:none} }
+
       /* ===== Aviso 4:20 ===== */
       #aviso420 {
       position: fixed;
@@ -148,6 +198,27 @@
                <div style="overflow:hidden; height:0px; width:0px;"><a href="https://www.rcast.net" title="Internet Radio Hosting">RCAST.NET</a></div>
                <!-- RCAST.NET - END EMBEDDED PLAYER -->
                <!-- RCAST.NET - END EMBEDDED PLAYER -->
+
+               <!-- Botón Alexa -->
+               <div style="margin:12px 0 36px;">
+                  <div class="nn-alexa" id="nnAlexa">
+                     <button class="nn-alexa__btn" type="button" aria-expanded="false" aria-controls="nnAlexaPanel">
+                        <svg class="nn-alexa__ring" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+                           <circle cx="12" cy="12" r="8.5" fill="none" stroke="var(--nn-accent)" stroke-width="2" stroke-linecap="round" stroke-dasharray="44 9.4" transform="rotate(-60 12 12)"/>
+                        </svg>
+                        <span class="nn-alexa__label"><small>Escúchanos en</small><b>Alexa</b></span>
+                     </button>
+                     <div class="nn-alexa__panel" id="nnAlexaPanel" hidden>
+                        <p class="nn-alexa__cap">Solo di</p>
+                        <p class="nn-alexa__cmd">“Alexa, reproduce Noize Nación Radio en TuneIn”</p>
+                        <div class="nn-alexa__row">
+                           <button class="nn-alexa__copy" type="button">Copiar frase</button>
+                           <a href="https://tunein.com/radio/Noize-Naci%C3%B3n-Radio-s264467/" target="_blank" rel="noopener">Abrir en TuneIn</a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
                <h2 class="w3-container w3-center w3-xlarge">Retransmisores de Noize Nación Radio</h2>
                <div id="retransmisores">
                   <section class="customer-logos slider">
@@ -292,6 +363,39 @@
 
             revisar();
             setInterval(revisar, 15000);
+         })();
+      </script>
+
+      <!-- Botón Alexa -->
+      <script>
+         (function () {
+            var root = document.getElementById('nnAlexa');
+            var btn = root.querySelector('.nn-alexa__btn');
+            var panel = root.querySelector('.nn-alexa__panel');
+            var copy = root.querySelector('.nn-alexa__copy');
+            var frase = 'Alexa, reproduce Noize Nación Radio en TuneIn';
+
+            function alternar(abrir) {
+               panel.hidden = !abrir;
+               btn.setAttribute('aria-expanded', abrir);
+            }
+            btn.addEventListener('click', function () { alternar(panel.hidden); });
+            document.addEventListener('click', function (e) { if (!root.contains(e.target)) alternar(false); });
+            document.addEventListener('keydown', function (e) { if (e.key === 'Escape') alternar(false); });
+
+            copy.addEventListener('click', function () {
+               var listo = function () {
+                  copy.textContent = 'Copiada ✓';
+                  setTimeout(function () { copy.textContent = 'Copiar frase'; }, 1800);
+               };
+               if (navigator.clipboard && navigator.clipboard.writeText) {
+                  navigator.clipboard.writeText(frase).then(listo);
+               } else {
+                  var t = document.createElement('textarea');
+                  t.value = frase; document.body.appendChild(t); t.select();
+                  document.execCommand('copy'); document.body.removeChild(t); listo();
+               }
+            });
          })();
       </script>
 
