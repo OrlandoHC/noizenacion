@@ -54,6 +54,13 @@
       /* Logos como tarjetas blancas (se ven bien en claro y en oscuro) */
       #retransmisores .slide img { display: block; width: 100%; height: auto; box-sizing: border-box; padding: 4px; background: #fff; border-radius: 12px; }
 
+      /* Tarjeta de texto para Radio Garden (misma forma que los logos del slider).
+         Para usar su logo oficial: guarda ./slider/img/radiogarden.png y reemplaza
+         el <div class="slide-texto"> por <img src="./slider/img/radiogarden.png" alt="Radio Garden"> */
+      #retransmisores .slide-texto { display: flex; align-items: center; justify-content: center; gap: 8px; box-sizing: border-box; width: 100%; aspect-ratio: 2 / 1; padding: 4px 6px; background: #fff; border-radius: 12px; color: #1b1f24; font: 700 15px/1.1 "Lato", sans-serif; letter-spacing: .02em; text-align: left; }
+      #retransmisores .slide-texto svg { flex: none; width: 26px; height: 26px; }
+      @media (max-width: 520px) { #retransmisores .slide-texto { font-size: 12px; gap: 5px; } #retransmisores .slide-texto svg { width: 20px; height: 20px; } }
+
       /* Antes de que slick arranque, evita que los logos salten */
       .customer-logos:not(.slick-initialized) { display: flex; overflow: hidden; }
       .customer-logos:not(.slick-initialized) > a { flex: 0 0 16.66%; padding: 0 10px; box-sizing: border-box; }
@@ -224,6 +231,7 @@
                   <section class="customer-logos slider">
                      <a href="https://emisoras.com.mx/" target="_blank" rel="noopener"><div class="slide"><img src="https://cdn.webrad.io/images/banners/radios-online-big.png" alt="emisoras.com.mx"></div></a>
                      <a href="https://tunein.com/radio/Noize-Naci%C3%B3n-Radio-s264467/" target="_blank" rel="noopener"><div class="slide"><img src="./slider/img/tunein.png" alt="TuneIn"></div></a>
+                     <a href="https://radio.garden/listen/noize-nacion/sOQ2jNk8" target="_blank" rel="noopener"><div class="slide"><div class="slide-texto"><img src="./slider/img/radiogarden.png" alt="Radio Garden"></div></div></a>
                      <a href="https://dir.rcast.net/radio/67555" target="_blank" rel="noopener"><div class="slide"><img src="./slider/img/rcast.png" alt="Rcast"></div></a>
                      <a href="https://zeno.fm/radio/noize-nacion-radio/" target="_blank" rel="noopener"><div class="slide"><img src="./slider/img/zeno.png" alt="Zeno FM"></div></a>
                      <a href="https://liveonlineradio.net/es/noize-nacion-radio" target="_blank" rel="noopener"><div class="slide"><img src="./slider/img/liveonlineradio.png" alt="Live Online Radio"></div></a>
